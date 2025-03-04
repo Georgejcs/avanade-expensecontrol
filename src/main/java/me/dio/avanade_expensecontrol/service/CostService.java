@@ -1,6 +1,7 @@
 package me.dio.avanade_expensecontrol.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -11,7 +12,7 @@ import me.dio.avanade_expensecontrol.exception.BadRequestException;
 import me.dio.avanade_expensecontrol.repository.CostRepository;
 
 @Service
-public class CostService {
+public class CostService implements CostServiceunimp{
     private CostRepository costRepository;
 
     public CostService(CostRepository costRepository) {
@@ -26,9 +27,12 @@ public class CostService {
         return costRepository.findAll(sort);
     }
 
-    public List<Cost> create(Cost cost) {
-        costRepository.save(cost);
-        return list();
+    public Cost findById(Long id) {
+        return costRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    }
+
+    public Cost create(Cost cost) {
+        return costRepository.save(cost);
     }
 
     public List<Cost> update(Long id, Cost cost) {
@@ -47,6 +51,10 @@ public class CostService {
             throw new BadRequestException("Cost %d não existe! ".formatted(id));
         });
         return list();
+    }
+
+    public void deleteAll(List<Cost> costs) {
+        costRepository.deleteAll(costs);
     }
 
 }

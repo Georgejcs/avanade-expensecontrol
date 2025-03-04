@@ -1,5 +1,7 @@
 package me.dio.avanade_expensecontrol.entity;
 
+import java.time.LocalDate;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import jakarta.persistence.Entity;
@@ -7,6 +9,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+import me.dio.avanade_expensecontrol.enums.Priority;
+import me.dio.avanade_expensecontrol.enums.Status;
 
 @Entity
 @Table(name = "tb_costs")
@@ -17,21 +22,23 @@ public class Cost {
     private Long id;
     private String description;
     private double amount;
-    private boolean status;
-    private int priority;
+    private Status status;
+    private Priority priority;
+    private LocalDate date;
 
     public Cost() {
     }
 
-    public Cost(Long id, String description, double amount ,boolean status, int priority) {
+    public Cost(Long id, String description, double amount ,Status status, Priority priority, LocalDate date) {
         this.id = id;
         this.description = description;
         this.amount = amount;
         this.status = status;
         this.priority = priority;
+        this.date = date;
     }
 
-    public Cost(String description,double amount, boolean status, int priority) {
+    public Cost(String description,double amount, Status status, Priority priority) {
         this.description = description;
         this.amount = amount;
         this.status = status;
@@ -62,20 +69,28 @@ public class Cost {
         this.amount = amount;
     }
 
-    public boolean isStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public int getPriority() {
+    public Priority getPriority() {
         return priority;
     }
 
-    public void setPriority(int priority) {
+    public void setPriority(Priority priority) {
         this.priority = priority;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package me.dio.avanade_expensecontrol.web;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,8 @@ public class CostController {
     private CostService costService;
 
     @PostMapping
-    ResponseEntity<List<Cost>> create(@Valid @RequestBody Cost cost) {
+    ResponseEntity<Cost> create(@Valid @RequestBody Cost cost) {
+        cost.setDate(LocalDate.now());
         return ResponseEntity.status(HttpStatus.CREATED)
         .body(costService.create(cost));
     }
@@ -35,6 +37,12 @@ public class CostController {
     @GetMapping
     List<Cost> list() {
         return costService.list();
+    }
+
+    @GetMapping("{id}")
+    ResponseEntity<Cost> findById(@PathVariable Long id) {
+        var cost = costService.findById(id);
+        return ResponseEntity.ok(cost);
     }
 
     @PutMapping("{id}")
@@ -46,4 +54,11 @@ public class CostController {
     List<Cost> delete(@PathVariable Long id) {
         return costService.delete(id);
     }
+
+    @DeleteMapping
+    void deleteAll() {
+        List<Cost> costs = costService.list();
+        costService.deleteAll(costs);
+    }
+
 }
